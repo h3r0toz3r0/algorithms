@@ -1,2 +1,0 @@
-# Algorithims
-Small algorithm projects

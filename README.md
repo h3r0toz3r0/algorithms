@@ -20,11 +20,12 @@ This repository contains implementations of various algorithms in C, C++, and Py
 ### Requirements
 
 - **Hardware:** Any machine capable of running a C, C++, and Python environment.
-- **Operating System:** Linux, macOS, or Windows.
+- **Operating System:** Recommended Linux 5.15.0.
 - **Software:**
   - C Compiler (e.g., `gcc`)
   - C++ Compiler (e.g., `g++`)
-  - Python 3.x
+  - Python 3.X
+  - 
 
 ### Installation
 

@@ -12,11 +12,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <fcntl.h>
-
 #include <CUnit/Basic.h>
-
 #include "example.h"
+#include "test_auxiliary.h"
 #include "test_example.h"
 
 // Function Declarations
@@ -31,11 +29,13 @@ example_suite (void)
 
     if (NULL == suite)
     {
+        ERROR_LOG("Failed to add example-suite\n");
         goto CLEANUP;
     }
 
     if (NULL == (CU_add_test(suite, "test_hello", test_hello)))
     {
+        ERROR_LOG("Failed to add test_hello to suite\n");
         suite = NULL;
         goto CLEANUP;
     }
@@ -60,31 +60,20 @@ CLEANUP:
 static void
 test_hello (void)
 {
-    // Redirect stdout to capture output
-    int stdout_fd = dup(fileno(stdout));
-    FILE *output = fopen("/tmp/test_hello_output.txt", "w");
-    dup2(fileno(output), fileno(stdout));
+    // Capture function output to buffer
+    char *buffer = NULL;
+    buffer       = capture_stdout(hello);
 
-    // Call the function
-    int result = hello();
-
-    // Restore stdout and close the file
-    fflush(stdout);
-    dup2(stdout_fd, fileno(stdout));
-    close(stdout_fd);
-    fclose(output);
-
-    // Read the output file
-    output = fopen("/tmp/test_hello_output.txt", "r");
-    char buffer[256];
-    fgets(buffer, sizeof(buffer), output);
-    fclose(output);
+    // Capture return value of function
+    int result;
+    result = hello();
 
     // Check the output and return value
     CU_ASSERT_EQUAL(result, 0);
     CU_ASSERT_STRING_EQUAL(buffer, "Hello World!\n");
 
     // Clean up
-    remove("/tmp/test_hello_output.txt");
+    free(buffer);
+    buffer = NULL;
     return;
 }

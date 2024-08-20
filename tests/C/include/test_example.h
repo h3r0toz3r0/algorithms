@@ -19,6 +19,7 @@
  *
  * @return  Returns a pointer to the created test suite.
  */
-CU_pSuite example_suite(void);
+CU_pSuite 
+example_suite(void);
 
 #endif // TEST_EXAMPLE_H

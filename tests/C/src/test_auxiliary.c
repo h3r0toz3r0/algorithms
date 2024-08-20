@@ -14,7 +14,7 @@
 
 // Macros
 #define OUTPUT_BUFFER_SIZE 1024
-#define MAX_STRING_LENGTH 256
+#define MAX_STRING_LENGTH  256
 #define TEMP_FILE_PATH     "/tmp/test_output.txt"
 
 // Compares two strings

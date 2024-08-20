@@ -17,6 +17,8 @@ ACTUAL_OBJ = $(wildcard $(ACTUAL_OBJ_DIR)/*.o)
 # Executable names
 TEST_EXEC = $(BIN_DIR)/test_main
 
+.PHONY: all clean execute valgrind
+
 # Default target
 all: $(OBJ_DIR) $(BIN_DIR) $(TEST_EXEC)
 	@echo "All source files and test_main compiled."
@@ -49,11 +51,6 @@ execute: $(TEST_EXEC)
 valgrind: $(TEST_EXEC)
 	@echo "Running tests with Valgrind:"
 	@valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./$(TEST_EXEC) $(ARGS)
-
-# Code formatting with clang-format
-format:
-	@echo "Formatting code with clang-format..."
-	@clang-format-15 -i $(TEST_SRC) || true
 
 # Clean object and executable files
 clean:

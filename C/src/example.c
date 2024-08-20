@@ -13,7 +13,8 @@
 
 #include "example.h"
 
-int hello() 
+int
+hello ()
 {
     printf("Hello World!\n");
     return 0;

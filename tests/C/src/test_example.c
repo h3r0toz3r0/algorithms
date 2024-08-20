@@ -60,31 +60,31 @@ CLEANUP:
 static void
 test_hello (void)
 {
-    // // Redirect stdout to capture output
-    // int stdout_fd = dup(fileno(stdout));
-    // FILE *output = fopen("/tmp/test_hello_output.txt", "w");
-    // dup2(fileno(output), fileno(stdout));
+    // Redirect stdout to capture output
+    int stdout_fd = dup(fileno(stdout));
+    FILE *output = fopen("/tmp/test_hello_output.txt", "w");
+    dup2(fileno(output), fileno(stdout));
 
-    // // Call the function
-    // int result = hello();
+    // Call the function
+    int result = hello();
 
-    // // Restore stdout and close the file
-    // fflush(stdout);
-    // dup2(stdout_fd, fileno(stdout));
-    // close(stdout_fd);
-    // fclose(output);
+    // Restore stdout and close the file
+    fflush(stdout);
+    dup2(stdout_fd, fileno(stdout));
+    close(stdout_fd);
+    fclose(output);
 
-    // // Read the output file
-    // output = fopen("/tmp/test_hello_output.txt", "r");
-    // char buffer[256];
-    // fgets(buffer, sizeof(buffer), output);
-    // fclose(output);
+    // Read the output file
+    output = fopen("/tmp/test_hello_output.txt", "r");
+    char buffer[256];
+    fgets(buffer, sizeof(buffer), output);
+    fclose(output);
 
-    // // Check the output and return value
-    // CU_ASSERT_EQUAL(result, 0);
-    // CU_ASSERT_STRING_EQUAL(buffer, "Hello World\n");
+    // Check the output and return value
+    CU_ASSERT_EQUAL(result, 0);
+    CU_ASSERT_STRING_EQUAL(buffer, "Hello World\n");
 
-    // // Clean up
-    // remove("/tmp/test_hello_output.txt");
+    // Clean up
+    remove("/tmp/test_hello_output.txt");
     return;
 }

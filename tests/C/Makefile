@@ -7,21 +7,25 @@ LDFLAGS = -lcunit
 TEST_SRC_DIR = src
 OBJ_DIR = obj
 BIN_DIR = bin
+ACTUAL_OBJ_DIR = ../../C/obj
 
 # Source and object files
 TEST_SRC = $(wildcard $(TEST_SRC_DIR)/*.c) test_main.c
 TEST_OBJ = $(patsubst $(TEST_SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(wildcard $(TEST_SRC_DIR)/*.c)) $(OBJ_DIR)/test_main.o
+ACTUAL_OBJ = $(wildcard $(ACTUAL_OBJ_DIR)/*.o)
 
 # Executable names
 TEST_EXEC = $(BIN_DIR)/test_main
 
 # Default target
-all: $(OBJ_DIR) $(TEST_OBJ) $(TEST_EXEC)
+all: $(OBJ_DIR) $(BIN_DIR) $(TEST_OBJ) $(TEST_EXEC)
 	@echo "All source files and test_main compiled."
 
 # Create directories if they don't exist
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
+
+$(BIN_DIR):
 	@mkdir -p $(BIN_DIR)
 
 # Compile all test source files
@@ -33,8 +37,8 @@ $(OBJ_DIR)/test_main.o: test_main.c
 	$(CC) $(CFLAGS) -c test_main.c -o $(OBJ_DIR)/test_main.o
 
 # Link the test executable
-$(TEST_EXEC): $(TEST_OBJ)
-	$(CC) $(TEST_OBJ) -o $(TEST_EXEC) $(LDFLAGS)
+$(TEST_EXEC): $(TEST_OBJ) $(ACTUAL_OBJ)
+	$(CC) $(TEST_OBJ) $(ACTUAL_OBJ) -o $(TEST_EXEC) $(LDFLAGS)
 
 # Execute compiled test suite
 execute: $(TEST_EXEC)

@@ -7,88 +7,134 @@ This repository contains implementations of various algorithms in C, C++, and Py
 ## Table of Contents
 
 - [Overview](#overview)
-- [Table of Contents](#table-of-contents)
 - [Usage](#usage)
   - [Requirements](#requirements)
-  - [Installation](#installation)
-- [Operator Guide](#operator-guide)
-- [Testing](#testing)
+  - [Setup](#setup)
+  - [Operator Guide](#operator-guide)
+    - [C Algorithms](#c-algorithms)
+    - [C++ Algorithms](#c-algorithms)
+    - [Python Algorithms](#python-algorithms)
+  - [Testing](#testing)
+    - [C Algorithm Tests](#c-algorithm-tests)
+    - [C++ Algorithm Tests](#c-algorithm-tests)
+    - [Python Algorithm Tests](#python-algorithm-tests)
 - [Known Issues/Bugs](#known-issuesbugs)
+- [Repository Structure](#repository-structure)
 
 ## Usage
 
 ### Requirements
 
-- **Hardware:** Any machine capable of running a C, C++, and Python environment.
-- **Operating System:** Recommended Linux 5.15.0.
-- **Software:**
-  - C Compiler (e.g., `gcc`)
-  - C++ Compiler (e.g., `g++`)
-  - Python 3.X
-  - 
+- **Hardware**: Any machine capable of running a C, C++, and Python environment.
+- **Operating System**: Recommended Ubuntu 22.04.
+- **Software**: 
+  - `git`: to clone the repo
+  - all other dependencies will be installed with the `setup.sh`
 
-### Installation
+### Setup
 
-1. **Clone the repository:**
+1. Install `git`:
+
+   ```sh
+   sudo apt install git
+   ```
+1. Clone the repository:
 
    ```sh
    git clone https://github.com/yourusername/algorithms.git
    cd algorithms
    ```
-
-2. C and C++:
-  - Ensure that gcc and g++ are installed.
-  - Navigate to the appropriate directory and compile the files:
+1. Install necessary dependencies:
 
    ```sh
-  Copy code
-  cd C/sorting
-  gcc bubble_sort.c -o bubble_sort
-  ./bubble_sort
-  ```
-
-3. Python:
-  - Ensure Python 3.x is installed.
-  - Run the scripts directly:
-  
-  ```sh
-  Copy code
-  cd Python/sorting
-  python3 bubble_sort.py
-  ```
+   ./setup.sh
+   ```
 
 ### Operator Guide
 
-To use the algorithms, navigate to the relevant directory for the language and algorithm type, compile (if necessary), and run the executable/script. For example, to run the bubble_sort implementation in C:
+#### C Algorithms
+
+To compile the C algorithms and generate the corresponding object files, use the following commands:
 
 ```sh
-Copy code
-cd C/sorting
-gcc bubble_sort.c -o bubble_sort
-./bubble_sort
+make all
 ```
 
-For Python, you can run the scripts directly:
+or
 
 ```sh
-Copy code
-cd Python/sorting
-python3 bubble_sort.py
+make C
 ```
 
-## Testing
-
-Each algorithm has accompanying tests located in the tests/ directory. To run the tests:
-
-- C/C++: Compile and run the test files in the tests/C or tests/C++ directories.
-- Python: Navigate to the tests/Python directory and run the test scripts:
+To remove the generated object files and clean up the build directory, use:
 
 ```sh
-Copy code
-python3 test_sorting.py
+make clean
 ```
 
-Test coverage includes edge cases, performance benchmarks, and comparisons against built-in library functions (where applicable).
+To interact with the algorithms, you will need to write a program that links against the generated object files and uses the internal functions.
+
+---
+
+#### C++ Algorithms
+
+---
+
+#### Python Algorithms
+
+---
+
+### Testing
+
+Each algorithm has accompanying tests located in the tests/ directory. Test coverage includes edge cases, performance benchmarks, and comparisons against built-in library functions (where applicable).
+
+#### C Algorithm Tests
+
+To compile the C algorithm tests, use the following command:
+
+```sh
+make test
+```
+
+To remove the generated object files and clean up the build directory, use:
+
+```sh
+make clean
+```
+
+To run all tests, use:
+
+```sh
+make test execute
+```
+Alternatively, to run tests with `Valgrind` to check for memory leaks, use:
+
+```sh
+make test valgrind
+```
+The testing suite supports various command-line arguments. You can use these with either the `execute` or `valgrind` modes:
+
+```sh
+make test execute help
+make test execute list
+make test execute <specific suite name>
+
+make test valgrind help
+make test valgrind list
+make test valgrind <specific suite name>
+```
+
+- `help`: Displays a usage guide.
+- `list`: Lists all available test suite names.
+- `<specific suite name>`: Runs a specific test suite.
+
+#### C++ Algorithm Tests
+
+---
+
+#### Python Algorithm Tests
+
+---
 
 ## Known Issues/Bugs
 

@@ -40,7 +40,7 @@ $(OBJ_DIR)/test_main.o: test_main.c | $(OBJ_DIR)
 $(TEST_EXEC): $(TEST_OBJ) $(ACTUAL_OBJ) | $(BIN_DIR)
 	$(CC) $(TEST_OBJ) $(ACTUAL_OBJ) -o $(TEST_EXEC) $(LDFLAGS)
 
-# Execute compiled test suite with arguments
+# Execute compiled test suite
 execute: $(TEST_EXEC)
 	@echo "Executing test_main with arguments: $(ARGS)"
 	@./$(TEST_EXEC) $(ARGS)
@@ -59,5 +59,9 @@ format:
 clean:
 	rm -rf $(OBJ_DIR) $(BIN_DIR)
 
-# Capture additional arguments for the executable
+# Capture additional arguments after `make execute`
 ARGS = $(filter-out $@,$(MAKECMDGOALS))
+
+# Prevent make from interpreting additional arguments as targets
+%:
+	@:

@@ -9,7 +9,7 @@ C++:
 	$(MAKE) -C C++
 
 test:
-	$(MAKE) -tests/C/test
+	$(MAKE) -C tests/C
 
 clean:
 	$(MAKE) -C C clean

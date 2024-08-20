@@ -18,7 +18,7 @@ ACTUAL_OBJ = $(wildcard $(ACTUAL_OBJ_DIR)/*.o)
 TEST_EXEC = $(BIN_DIR)/test_main
 
 # Default target
-all: $(OBJ_DIR) $(BIN_DIR) $(TEST_OBJ) $(TEST_EXEC)
+all: $(OBJ_DIR) $(BIN_DIR) $(TEST_EXEC)
 	@echo "All source files and test_main compiled."
 
 # Create directories if they don't exist
@@ -29,15 +29,15 @@ $(BIN_DIR):
 	@mkdir -p $(BIN_DIR)
 
 # Compile all test source files
-$(OBJ_DIR)/%.o: $(TEST_SRC_DIR)/%.c
+$(OBJ_DIR)/%.o: $(TEST_SRC_DIR)/%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Compile test_main.c
-$(OBJ_DIR)/test_main.o: test_main.c
+$(OBJ_DIR)/test_main.o: test_main.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c test_main.c -o $(OBJ_DIR)/test_main.o
 
 # Link the test executable
-$(TEST_EXEC): $(TEST_OBJ) $(ACTUAL_OBJ)
+$(TEST_EXEC): $(TEST_OBJ) $(ACTUAL_OBJ) | $(BIN_DIR)
 	$(CC) $(TEST_OBJ) $(ACTUAL_OBJ) -o $(TEST_EXEC) $(LDFLAGS)
 
 # Execute compiled test suite

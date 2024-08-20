@@ -82,7 +82,7 @@ test_hello (void)
 
     // Check the output and return value
     CU_ASSERT_EQUAL(result, 0);
-    CU_ASSERT_STRING_EQUAL(buffer, "Hello World\n");
+    CU_ASSERT_STRING_EQUAL(buffer, "Hello World!\n");
 
     // Clean up
     remove("/tmp/test_hello_output.txt");

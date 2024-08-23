@@ -12,6 +12,7 @@
 #include <CUnit/Basic.h>
 #include "test_auxiliary.h"
 #include "test_example.h"
+#include "test_linked_list.h"
 
 // Function Declarations
 static void print_help(void);
@@ -170,7 +171,7 @@ create_suites (void)
 {
     int retval = CUE_SUCCESS; // Assume success unless an error occurs
 
-    // Example:
+    // Example
     if (NULL == example_suite())
     {
         ERROR_LOG("Failed to create Example Suite\n");
@@ -178,7 +179,13 @@ create_suites (void)
         goto EXIT;
     }
 
-    // Additionally test cases should be added below:
+    // Linked List
+    if (NULL == linked_list_suite())
+    {
+        ERROR_LOG("Failed to create the Linked List Suite\n");
+        retval = CU_get_error();
+        goto EXIT;
+    }
 
 EXIT:
     return retval;

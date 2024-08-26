@@ -12,7 +12,7 @@ ACTUAL_OBJ_DIR = ../../C/obj
 # Source and object files
 TEST_SRC = $(wildcard $(TEST_SRC_DIR)/*.c) test_main.c
 TEST_OBJ = $(patsubst $(TEST_SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(wildcard $(TEST_SRC_DIR)/*.c)) $(OBJ_DIR)/test_main.o
-ACTUAL_OBJ = $(wildcard $(ACTUAL_OBJ_DIR)/*.o)
+ACTUAL_OBJ = $(shell find $(ACTUAL_OBJ_DIR) -type f -name "*.o")
 
 # Executable names
 TEST_EXEC = $(BIN_DIR)/test_main

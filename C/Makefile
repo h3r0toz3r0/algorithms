@@ -1,11 +1,15 @@
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra -Wpedantic -Iinclude
-SOURCES = $(wildcard src/*.c)
-OBJECTS = $(patsubst src/%.c,obj/%.o,$(SOURCES))
 
+# Find all C source files under src/ recursively
+SOURCES = $(shell find src/ -type f -name "*.c")
+# Create object files in obj/ with a corresponding directory structure
+OBJECTS = $(patsubst src/%,obj/%,$(SOURCES:.c=.o))
+
+# Ensure obj/ and its subdirectories are created
 obj/%.o: src/%.c 
-	@mkdir -p obj
-	$(CC) -c $(CFLAGS) $< -o $@
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 all: $(OBJECTS)
 

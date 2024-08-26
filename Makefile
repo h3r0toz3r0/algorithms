@@ -8,7 +8,7 @@ C++:
 	$(MAKE) -C C++
 
 # Forward arguments to the tests/C/Makefile
-test: C
+c_test: C
 	$(MAKE) -C tests/C $(ARGS)
 
 clean:
@@ -25,7 +25,7 @@ format:
 	@clang-format-15 -i $(TEST_SRC) || true
 	@clang-format-15 -i $(ACTUAL_SRC) || true
 
-.PHONY: all clean C C++ test format
+.PHONY: all clean C C++ c_test format
 
 # Capture additional arguments after `make execute`
 ARGS = $(filter-out $@,$(MAKECMDGOALS))

@@ -93,7 +93,7 @@ Each algorithm has accompanying tests located in the tests/ directory. Test cove
 To compile the C algorithm tests, use the following command:
 
 ```sh
-make test
+make c_test
 ```
 
 To remove the generated object files and clean up the build directory, use:
@@ -105,23 +105,23 @@ make clean
 To run all tests, use:
 
 ```sh
-make test execute
+make c_test execute
 ```
 Alternatively, to run tests with `Valgrind` to check for memory leaks, use:
 
 ```sh
-make test valgrind
+make c_test valgrind
 ```
 The testing suite supports various command-line arguments. You can use these with either the `execute` or `valgrind` modes:
 
 ```sh
-make test execute help
-make test execute list
-make test execute <specific suite name>
+make c_test execute help
+make c_test execute list
+make c_test execute <specific suite name>
 
-make test valgrind help
-make test valgrind list
-make test valgrind <specific suite name>
+make c_test valgrind help
+make c_test valgrind list
+make c_test valgrind <specific suite name>
 ```
 
 - `help`: Displays a usage guide.

@@ -7,11 +7,10 @@
  * - **Destroy**: Deletes all elements in the linked list and destroys the list.
  * - **Insert**: Adds a new element to the beginning, end, or any position in
  * the linked list.
- * - **Delete**: Removes an element from the linked list by key or position.
- * - **Search By Key**: Finds an element in the linked list by key.
- * - **Search By Index**: Finds an element in the linked list by index.
- * - **Traversal**: Visits each element in the linked list sequentially.
- * - **Reverse**: Reverses the order of the elements in the linked list.
+ * - **Delete**: Removes an element from the linked list by position.
+ * - **Search By Key**: Finds an element position in the linked list by key.
+ * - **Search By Index**: Finds an element in the linked list by position.
+ * - **Size**: Finds size of linked list.
  *
  * @section complexity Complexity
  * - **Time Complexity**:   O(1) for insertion and deletion at the p_head,
@@ -91,99 +90,59 @@ linked_list_preappend (linked_list_t *p_list, void *p_data)
 linked_list_t *
 linked_list_insert (linked_list_t *p_list, void *p_data, int index)
 {
-    if ((NULL == p_list) || (0 > index) || (NULL == p_data))
+    if ((NULL == p_list) || (NULL == p_list->del_f) || (NULL == p_data))
     {
         goto EXIT;
     }
 
+    if (0 > index)
+    {
+        p_list->del_f(p_data);
+        goto EXIT;
+    }
+
+    // create new node
     linked_list_node_t *p_new_node = NULL;
-    p_new_node = linked_list_create_node(p_data);
+    p_new_node                     = linked_list_create_node(p_data);
 
     if (NULL == p_new_node)
     {
         goto EXIT;
     }
 
+    // handle preappend operations
     if (0 == index)
     {
         p_new_node->p_next = p_list->p_head;
-        p_list->p_head = p_new_node;
+        p_list->p_head     = p_new_node;
     }
-
-    int count = 0;
-    linked_list_node_t *p_current = p_list->p_head;
-    linked_list_node_t *p_prev    = NULL;
-
-    while (NULL != p_current)
+    else
     {
-        if (index == count)
+        int                 count  = 0;
+        linked_list_node_t *p_curr = p_list->p_head;
+        linked_list_node_t *p_prev = NULL;
+
+        while ((NULL != p_curr) && (count < index))
         {
-            p_new_node->p_next = p_current;
-            p_prev->p_next = p_new_node;
-            break;
+            p_prev = p_curr;
+            p_curr = p_curr->p_next;
+            count++;
         }
 
-        count++;
-        p_prev    = p_current;
-        p_current = p_current->p_next;
-    }
-
-    if (count != index)
-    {
-        linked_list_del_node(p_new_node, p_list->del_f);
+        if (count == index) // handle insertion operation at specific index
+        {
+            p_new_node->p_next = p_curr;
+            p_prev->p_next     = p_new_node;
+        }
+        else // count exceeds index; remove new node
+        {
+            linked_list_del_node(p_new_node, p_list->del_f);
+        }
     }
 
 EXIT:
     return p_list;
 }
-
-//     if ((NULL == p_list) || (NULL == p_data) || (0 > index))
-//     {
-//         goto EXIT;
-//     }
-
-//     // create new node
-//     linked_list_node_t *p_new_node = NULL;
-//     p_new_node                     = linked_list_create_node(p_data);
-
-//     if (NULL == p_new_node)
-//     {
-//         goto EXIT;
-//     }
-
-//     // handle preappend operations
-//     if (0 == index)
-//     {
-//         p_new_node->p_next = p_list->p_head;
-//         p_list->p_head     = p_new_node;
-//     }
-//     else
-//     {
-//         int                 count  = 0;
-//         linked_list_node_t *p_curr = p_list->p_head;
-//         linked_list_node_t *p_prev = NULL;
-
-//         while ((NULL != p_curr) && (count < index))
-//         {
-//             p_prev = p_curr;
-//             p_curr = p_curr->p_next;
-//             count++;
-//         }
-
-//         if (count == index) // handle insertion operation at specific index
-//         {
-//             p_new_node->p_next = p_curr;
-//             p_prev->p_next     = p_new_node;
-//         }
-//         else // count exceeds index; remove new node
-//         {
-//             linked_list_del_node(p_new_node, p_list->del_f);
-//         }
-//     }
-
-// EXIT:
-//     return p_list;
-// }
 
 // Deletes data in linked list at index
 linked_list_t *

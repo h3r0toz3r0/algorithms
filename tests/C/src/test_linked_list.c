@@ -26,6 +26,7 @@ static void test_linked_list_at(void);
 static void test_linked_list_find(void);
 static void test_linked_list_size(void);
 static void test_linked_list_extreme_cases(void);
+static void test_linked_list_null(void);
 void        static_print_int(void *p_data);
 void        static_delete_int(void *p_data);
 int         static_compare_ints(void *p_lhs, void *p_rhs);
@@ -122,9 +123,19 @@ linked_list_suite (void)
     }
 
     if (NULL
-        == (CU_add_test(suite, "test_linked_list_extreme_cases", test_linked_list_extreme_cases)))
+        == (CU_add_test(suite,
+                        "test_linked_list_extreme_cases",
+                        test_linked_list_extreme_cases)))
     {
         ERROR_LOG("Failed to add test_linked_list_extreme_cases to suite\n");
+        suite = NULL;
+        goto CLEANUP;
+    }
+
+    if (NULL
+        == (CU_add_test(suite, "test_linked_list_null", test_linked_list_null)))
+    {
+        ERROR_LOG("Failed to add test_linked_list_null to suite\n");
         suite = NULL;
         goto CLEANUP;
     }
@@ -284,7 +295,8 @@ test_linked_list_preappend (void)
  *
  * This test verifies that a new node can be inserted at a specified index in
  * a linked list. It checks insertion at the head, at the end, and in the middle
- * of the list, ensuring that the list is correctly updated and the size is accurate.
+ * of the list, ensuring that the list is correctly updated and the size is
+ * accurate.
  */
 static void
 test_linked_list_insert (void)
@@ -313,7 +325,8 @@ test_linked_list_insert (void)
  *
  * This test verifies that a node can be deleted from a linked list at a
  * specified index. It ensures that the list is updated correctly, including
- * handling deletion of the head node and nodes in the middle or end of the list.
+ * handling deletion of the head node and nodes in the middle or end of the
+ * list.
  */
 static void
 test_linked_list_del_at (void)
@@ -324,14 +337,23 @@ test_linked_list_del_at (void)
     *value1     = 5;
     int *value2 = calloc(1, sizeof(int));
     *value2     = 10;
+    int *value3 = calloc(1, sizeof(int));
+    *value3     = 25;
+    int *value4 = calloc(1, sizeof(int));
+    *value4     = 50;
 
     p_list = linked_list_preappend(p_list, value1); // List: 5
     p_list = linked_list_preappend(p_list, value2); // List: 10 5
-    p_list = linked_list_del_at(p_list, 0);         // List: 5
+    p_list = linked_list_preappend(p_list, value3); // List: 25 10 5
+    p_list = linked_list_preappend(p_list, value4); // List: 50 25 10 5
+    p_list = linked_list_del_at(p_list, 1);         // List: 50 10 5
+    p_list = linked_list_del_at(p_list, 2);         // List: 50 10
 
-    CU_ASSERT_EQUAL(linked_list_size(p_list), 1);
+    CU_ASSERT_EQUAL(linked_list_size(p_list), 2);
     linked_list_node_t *p_node = linked_list_at(p_list, 0);
-    CU_ASSERT_EQUAL(0, static_compare_ints(p_node->p_data, (void *)value1));
+    CU_ASSERT_EQUAL(0, static_compare_ints(p_node->p_data, (void *)value4));
+    p_node = linked_list_at(p_list, 1);
+    CU_ASSERT_EQUAL(0, static_compare_ints(p_node->p_data, (void *)value2));
 
     linked_list_destroy(p_list);
 }
@@ -426,23 +448,24 @@ test_linked_list_size (void)
 /**
  * @brief   Tests extreme cases for the linked list operations.
  *
- * This test verifies the behavior of linked list operations under extreme conditions,
- * such as large number of elements, boundary cases, and performance issues.
+ * This test verifies the behavior of linked list operations under extreme
+ * conditions, such as large number of elements, boundary cases, and performance
+ * issues.
  *
  * @return  None.
  */
 static void
-test_linked_list_extreme_cases(void)
+test_linked_list_extreme_cases (void)
 {
     linked_list_t *p_list = linked_list_create(
         static_delete_int, static_compare_ints, static_print_int);
     int *value = NULL;
-    int i;
+    int  i;
 
     // Test 1: Large Number of Elements
     for (i = 0; i < 10000; ++i)
     {
-        value = calloc(1, sizeof(int));
+        value  = calloc(1, sizeof(int));
         *value = i;
         p_list = linked_list_preappend(p_list, value);
     }
@@ -452,16 +475,27 @@ test_linked_list_extreme_cases(void)
     // Test 2: Boundary Cases - Accessing Out-of-Bounds Indices
     linked_list_node_t *p_node = linked_list_at(p_list, 9999);
     CU_ASSERT_PTR_NOT_NULL(p_node);
-
+    p_node = linked_list_at(p_list, -10); // Should be NULL or error
+    CU_ASSERT_PTR_NULL(p_node);
     p_node = linked_list_at(p_list, 10000); // Should be NULL or error
     CU_ASSERT_PTR_NULL(p_node);
 
     // Test 3: Insertion at Invalid Position
-    p_list = linked_list_insert(p_list, value, 20000); // Should be handled gracefully
+    value  = calloc(1, sizeof(int));
+    *value = 10;
+    p_list = linked_list_insert(
+        p_list, value, 20000); // Should be handled gracefully
+    CU_ASSERT_PTR_NOT_NULL(p_list);
+    value  = calloc(1, sizeof(int));
+    *value = 20;
+    p_list
+        = linked_list_insert(p_list, value, -10); // inserting at negative index
     CU_ASSERT_PTR_NOT_NULL(p_list);
 
     // Test 4: Deletion at Invalid Position
     p_list = linked_list_del_at(p_list, 10000); // Deleting out-of-bounds
+    CU_ASSERT_PTR_NOT_NULL(p_list);
+    p_list = linked_list_del_at(p_list, -10); // Deleting negative index
     CU_ASSERT_PTR_NOT_NULL(p_list);
 
     // Test 5: Memory Management
@@ -469,10 +503,11 @@ test_linked_list_extreme_cases(void)
     p_list = NULL;
 
     // Test 6: Performance - Insert and Delete in Bulk
-    p_list = linked_list_create(static_delete_int, static_compare_ints, static_print_int);
+    p_list = linked_list_create(
+        static_delete_int, static_compare_ints, static_print_int);
     for (i = 0; i < 10000; ++i)
     {
-        value = calloc(1, sizeof(int));
+        value  = calloc(1, sizeof(int));
         *value = i;
         p_list = linked_list_preappend(p_list, value);
     }
@@ -486,6 +521,48 @@ test_linked_list_extreme_cases(void)
 
     // Clean up
     linked_list_destroy(p_list);
+}
+
+/**
+ * @brief   Tests null variables cases for the linked list operations.
+ *
+ * This test verifies the behavior of linked list operations when input
+ * variables are NULL.
+ *
+ * @return  None.
+ */
+static void
+test_linked_list_null (void)
+{
+    linked_list_t *p_list = NULL;
+    int           *value  = NULL;
+
+    // Test 1: Attempt to create a linked list with NULL function pointers
+    p_list = linked_list_create(NULL, NULL, NULL);
+    CU_ASSERT_PTR_NULL(p_list);
+
+    // Test 2: Attempt to pre-append NULL value to a non-existent list
+    p_list = linked_list_preappend(NULL, NULL);
+    CU_ASSERT_PTR_NULL(p_list);
+
+    // Test 3: Attempt to insert NULL value into a non-existent list
+    p_list = linked_list_insert(NULL, NULL, 0);
+    CU_ASSERT_PTR_NULL(p_list);
+
+    // Test 4: Attempt to delete at position from a NULL list
+    p_list = linked_list_del_at(NULL, 0);
+    CU_ASSERT_PTR_NULL(p_list);
+
+    // Test 5: Attempt to access an element from a NULL list
+    linked_list_node_t *p_node = linked_list_at(NULL, 0);
+    CU_ASSERT_PTR_NULL(p_node);
+
+    // Test 6: Attempt to retrieve the size of a NULL list
+    int size = linked_list_size(NULL);
+    CU_ASSERT_EQUAL(size, 0);
+
+    // Test 7: Attempt to destroy a NULL list
+    linked_list_destroy(NULL); // Should handle gracefully without crashing
 }
 
 // Function to delete an integer (free the memory)

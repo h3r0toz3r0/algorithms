@@ -160,7 +160,8 @@ typedef struct {
  *                        or NULL if memory allocation fails or if any provided 
  *                        function pointer is NULL.
  */
-linked_list_t *linked_list_create(del_func del_f, cmp_func cmp_f, print_func print_f);
+linked_list_t *
+linked_list_create(del_func del_f, cmp_func cmp_f, print_func print_f);
 
 /**
  * @brief Destroys the linked list and frees its resources.
@@ -175,7 +176,8 @@ linked_list_t *linked_list_create(del_func del_f, cmp_func cmp_f, print_func pri
  * @note The linked list itself, including all its nodes and data, will be deallocated. After
  *       calling this function, the provided pointer to the linked list will be invalid.
  */
-void linked_list_destroy(linked_list_t *p_list);
+void 
+linked_list_destroy(linked_list_t *p_list);
 
 /**
  * @brief Prepends a new node with the given data to the start of the linked list.
@@ -193,7 +195,8 @@ void linked_list_destroy(linked_list_t *p_list);
  *       by the caller. The function may return NULL if the list pointer or data pointer 
  *       is invalid, or if memory allocation for the new node fails.
  */
-linked_list_t *linked_list_preappend(linked_list_t *p_list, void *p_data);
+linked_list_t *
+linked_list_preappend(linked_list_t *p_list, void *p_data);
 
 /**
  * @brief Inserts a new node with the given data at the specified index in the linked list.
@@ -229,7 +232,8 @@ linked_list_t *linked_list_insert(linked_list_t *p_list, void *p_data, int index
  *         is out of bounds or if the linked list or deletion function is NULL, the function
  *         returns the original linked list unchanged.
  */
-linked_list_t *linked_list_del_at(linked_list_t *p_list, int index);
+linked_list_t *
+linked_list_del_at(linked_list_t *p_list, int index);
 
 /**
  * @brief Retrieves the node at a specified index in a linked list.
@@ -246,7 +250,8 @@ linked_list_t *linked_list_del_at(linked_list_t *p_list, int index);
  *         or if the linked list is NULL. The returned pointer should be treated as a node
  *         in the linked list and not directly modified.
  */
-linked_list_node_t *linked_list_at(linked_list_t *p_list, int index);
+linked_list_node_t *
+linked_list_at(linked_list_t *p_list, int index);
 
 /**
  * @brief Finds the index of a node in a linked list containing the specified data.
@@ -266,7 +271,8 @@ linked_list_node_t *linked_list_at(linked_list_t *p_list, int index);
  *         no matching node is found or if the linked list or data is NULL. The return
  *         value of -1 indicates that the data was not found in the list.
  */
-int linked_list_find(linked_list_t *p_list, void *p_data);
+int 
+linked_list_find(linked_list_t *p_list, void *p_data);
 
 /**
  * @brief Computes the number of nodes in a linked list.
@@ -280,7 +286,8 @@ int linked_list_find(linked_list_t *p_list, void *p_data);
  * @return The number of nodes in the linked list. If the list is NULL, the 
  *         function returns 0.
  */
-int linked_list_size(linked_list_t *p_list);
+int 
+linked_list_size(linked_list_t *p_list);
 
 /**
  * @brief Prints the data in each node of the linked list.
@@ -291,6 +298,7 @@ int linked_list_size(linked_list_t *p_list);
  * 
  * @param p_list Pointer to the linked list to be printed.
  */
-void linked_list_print(linked_list_t *p_list);
+void 
+linked_list_print(linked_list_t *p_list);
 
 #endif // LINKED_LIST_H

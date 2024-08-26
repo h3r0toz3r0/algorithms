@@ -62,7 +62,7 @@ test_hello (void)
 {
     // Capture function output to buffer
     char *buffer = NULL;
-    buffer       = capture_stdout(hello);
+    buffer       = capture_stdout((void *)hello, NULL);
 
     // Capture return value of function
     int result;

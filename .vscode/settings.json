@@ -22,6 +22,8 @@
         "variant": "c",
         "bitset": "c",
         "chrono": "c",
-        "algorithm": "c"
+        "algorithm": "c",
+        "list": "c",
+        "source_location": "c"
     }
 }

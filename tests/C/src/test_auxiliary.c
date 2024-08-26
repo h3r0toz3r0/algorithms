@@ -44,7 +44,7 @@ is_name_match (const char *string_1, const char *string_2)
 
 // Captures stdout output and saves to buffer
 char *
-capture_stdout (int (*func)(void))
+capture_stdout (void (*func)(void *), void *input)
 {
     int   fd;                      // File descriptor to save current stdout
     FILE *tmp_file = NULL;         // File to hold function output
@@ -80,7 +80,7 @@ capture_stdout (int (*func)(void))
     }
 
     // Execute the function and capture its output
-    (void)func();
+    (void)func(input);
 
     // Flush stdout (ensure all output is written)
     fflush(stdout);

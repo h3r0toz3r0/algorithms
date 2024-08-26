@@ -9,6 +9,9 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
+#define LINKED_LIST_NOT_FOUND -1
+#define LINKED_LIST_SUCCESS 0
+
 /**
  * @brief Function pointer type for a custom delete function.
  * 
@@ -210,10 +213,73 @@ linked_list_t *linked_list_preappend(linked_list_t *p_list, void *p_data);
  */
 linked_list_t *linked_list_insert(linked_list_t *p_list, void *p_data, int index);
 
-
+/**
+ * @brief Deletes the node at a specified index in a linked list.
+ *
+ * This function traverses the linked list to find the node at the given index and
+ * deletes it using the node deletion function specified in the linked list. The function
+ * handles deletion of both the head node and nodes in the middle or end of the list.
+ *
+ * @param p_list  A pointer to the linked list from which the node will be deleted. 
+ *                This must be a valid linked list structure with an initialized deletion function.
+ * @param index   The zero-based index of the node to delete. Indexing starts at 0.
+ *
+ * @return A pointer to the updated linked list. The return value is the same as `p_list`.
+ *         Returns the linked list structure after removing the specified node. If the index
+ *         is out of bounds or if the linked list or deletion function is NULL, the function
+ *         returns the original linked list unchanged.
+ */
 linked_list_t *linked_list_del_at(linked_list_t *p_list, int index);
-linked_list_t *linked_list_at(linked_list_t *p_list, int index);
-linked_list_node_t *linked_list_find(linked_list_t *p_list, void *p_data);
+
+/**
+ * @brief Retrieves the node at a specified index in a linked list.
+ *
+ * This function traverses the linked list starting from the head and returns the node
+ * at the given index. If the index is out of bounds or the list is NULL, the function
+ * returns NULL.
+ *
+ * @param p_list  A pointer to the linked list from which the node is to be retrieved. 
+ *                This must be a valid linked list structure.
+ * @param index   The zero-based index of the node to retrieve. Indexing starts at 0.
+ *
+ * @return A pointer to the node at the specified index, or NULL if the index is out of bounds
+ *         or if the linked list is NULL. The returned pointer should be treated as a node
+ *         in the linked list and not directly modified.
+ */
+linked_list_node_t *linked_list_at(linked_list_t *p_list, int index);
+
+/**
+ * @brief Finds the index of a node in a linked list containing the specified data.
+ *
+ * This function searches the linked list for a node that contains data matching the
+ * provided data. The comparison is done using the comparison function pointer provided
+ * when the linked list was created. If a matching node is found, the function returns
+ * the zero-based index of that node. If no matching node is found or if the linked list
+ * or data is NULL, the function returns -1.
+ *
+ * @param p_list  A pointer to the linked list to search. This must be a valid linked list
+ *                structure with an initialized comparison function.
+ * @param p_data  A pointer to the data to find in the linked list. The data is compared
+ *                using the comparison function specified in the linked list.
+ *
+ * @return The zero-based index of the first node containing the matching data, or -1 if
+ *         no matching node is found or if the linked list or data is NULL. The return
+ *         value of -1 indicates that the data was not found in the list.
+ */
+int linked_list_find(linked_list_t *p_list, void *p_data);
+
+/**
+ * @brief Computes the number of nodes in a linked list.
+ *
+ * This function traverses the linked list starting from the head node and counts
+ * the total number of nodes present in the list.
+ *
+ * @param p_list  A pointer to the linked list whose size is to be determined.
+ *                This pointer should be valid and not NULL.
+ *
+ * @return The number of nodes in the linked list. If the list is NULL, the 
+ *         function returns 0.
+ */
 int linked_list_size(linked_list_t *p_list);
 
 /**
@@ -224,9 +290,6 @@ int linked_list_size(linked_list_t *p_list);
  * been processed. The function does nothing if the linked list or the print function is `NULL`.
  * 
  * @param p_list Pointer to the linked list to be printed.
- * 
- * @note The function assumes that `p_list` is valid and that `p_list->print_f` is not `NULL`.
- *       If either of these conditions is not met, the function does nothing.
  */
 void linked_list_print(linked_list_t *p_list);
 

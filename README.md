@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains implementations of various algorithms in C, C++, and Python. Each algorithm is categorized by its type (e.g., sorting, searching, dynamic programming) and is implemented in all three languages to showcase different language features and best practices.
+The algorithms repository provides a collection of essential algorithm implementations, including sorting, searching, and more, organized for easy integration and use in various projects.
 
 ## Table of Contents
 
@@ -11,13 +11,7 @@ This repository contains implementations of various algorithms in C, C++, and Py
   - [Requirements](#requirements)
   - [Setup](#setup)
   - [Operator Guide](#operator-guide)
-    - [C Algorithms](#c-algorithms)
-    - [C++ Algorithms](#c-algorithms)
-    - [Python Algorithms](#python-algorithms)
   - [Testing](#testing)
-    - [C Algorithm Tests](#c-algorithm-tests)
-    - [C++ Algorithm Tests](#c-algorithm-tests)
-    - [Python Algorithm Tests](#python-algorithm-tests)
 - [Known Issues/Bugs](#known-issuesbugs)
 - [Repository Structure](#repository-structure)
 
@@ -25,11 +19,11 @@ This repository contains implementations of various algorithms in C, C++, and Py
 
 ### Requirements
 
-- **Hardware**: Any machine capable of running a C, C++, and Python environment.
+- **Hardware**: Any machine capable of running C.
 - **Operating System**: Recommended Ubuntu 22.04.
 - **Software**: 
-  - `git`: to clone the repo
-  - all other dependencies will be installed with the `setup.sh`
+  - `git` to clone the repo
+  - Dependencies installed via `setup.sh`
 
 ### Setup
 
@@ -41,8 +35,8 @@ This repository contains implementations of various algorithms in C, C++, and Py
 1. Clone the repository:
 
    ```sh
-   git clone https://github.com/yourusername/algorithms.git
-   cd algorithms
+   git clone https://github.com/yourusername/data-structures.git
+   cd data-structures/
    ```
 1. Install necessary dependencies:
 
@@ -52,48 +46,28 @@ This repository contains implementations of various algorithms in C, C++, and Py
 
 ### Operator Guide
 
-#### C Algorithms
-
-To compile the C algorithms and generate the corresponding object files, use the following commands:
+To compile the C files and generate the object files, use:
 
 ```sh
 make all
 ```
 
-or
-
-```sh
-make C
-```
-
 To remove the generated object files and clean up the build directory, use:
 
 ```sh
 make clean
 ```
 
-To interact with the algorithms, you will need to write a program that links against the generated object files and uses the internal functions.
-
----
-
-#### C++ Algorithms
-
----
-
-#### Python Algorithms
-
----
+To use the algorithms, write a program that links against the generated object files and utilizes the internal functions.
 
 ### Testing
 
-Each algorithm has accompanying tests located in the tests/ directory. Test coverage includes edge cases, performance benchmarks, and comparisons against built-in library functions (where applicable).
+Each algorithm includes tests located in the tests/ directory. The tests cover edge cases, performance benchmarks, and comparisons with built-in library functions.
 
-#### C Algorithm Tests
-
-To compile the C algorithm tests, use the following command:
+To compile the tests, use:
 
 ```sh
-make c_test
+make test
 ```
 
 To remove the generated object files and clean up the build directory, use:
@@ -102,51 +76,38 @@ To remove the generated object files and clean up the build directory, use:
 make clean
 ```
 
-To run all tests, use:
+The testing suite supports various command-line arguments:
 
 ```sh
-make c_test execute
-```
-Alternatively, to run tests with `Valgrind` to check for memory leaks, use:
-
-```sh
-make c_test valgrind
-```
-The testing suite supports various command-line arguments. You can use these with either the `execute` or `valgrind` modes:
-
-```sh
-make c_test execute help
-make c_test execute list
-make c_test execute <specific suite name>
-
-make c_test valgrind help
-make c_test valgrind list
-make c_test valgrind <specific suite name>
+./bin/test_main help
+./bin/test_main list
+./bin/test_main <specific suite name>
 ```
 
 - `help`: Displays a usage guide.
 - `list`: Lists all available test suite names.
 - `<specific suite name>`: Runs a specific test suite.
 
-#### C++ Algorithm Tests
+The Makefile includes additional commands:
 
----
+```sh
+make format
+make valgrind
+```
 
-#### Python Algorithm Tests
-
----
+- `format`: Formats all C source and header files using clang-format-15 to match Barr C standards.
+- `valgrind`: Runs all tests with Valgrind to check for memory leaks.
 
 ## Known Issues/Bugs
 
-Some algorithms may not be optimized for large datasets in their naive implementations.
-Platform-specific issues might arise due to differences in compilers or Python versions.
+No known issues.
 
 ## Repository Structure
 
 ```
 algorithms/
 │
-├── C/
+├── src/
 │   ├── sorting/
 │   │   ├── bubble_sort.c
 │   │   ├── merge_sort.c
@@ -167,73 +128,30 @@ algorithms/
 │   │   ├── kmp.c
 │   │   ├── rabin_karp.c
 │   │   └── trie.c
-│   └── data_structures/
-│       ├── linked_list.c
-│       ├── stack.c
-│       ├── queue.c
-│       ├── binary_tree.c
-│       └── hash_table.c
 │
-├── C++/
+├── include/
 │   ├── sorting/
-│   │   ├── bubble_sort.cpp
-│   │   ├── merge_sort.cpp
-│   │   └── quick_sort.cpp
+│   │   ├── bubble_sort.h
+│   │   ├── merge_sort.h
+│   │   └── quick_sort.h
 │   ├── searching/
-│   │   ├── binary_search.cpp
-│   │   ├── dfs.cpp
-│   │   └── bfs.cpp
+│   │   ├── binary_search.h
+│   │   ├── dfs.h
+│   │   └── bfs.h
 │   ├── dynamic_programming/
-│   │   ├── fibonacci.cpp
-│   │   ├── knapsack.cpp
-│   │   └── lcs.cpp
+│   │   ├── fibonacci.h
+│   │   ├── knapsack.h
+│   │   └── lcs.h
 │   ├── graphs/
-│   │   ├── dijkstra.cpp
-│   │   ├── kruskal.cpp
-│   │   └── prim.cpp
+│   │   ├── dijkstra.h
+│   │   ├── kruskal.h
+│   │   └── prim.h
 │   ├── strings/
-│   │   ├── kmp.cpp
-│   │   ├── rabin_karp.cpp
-│   │   └── trie.cpp
-│   └── data_structures/
-│       ├── linked_list.cpp
-│       ├── stack.cpp
-│       ├── queue.cpp
-│       ├── binary_tree.cpp
-│       └── hash_table.cpp
-│
-├── Python/
-│   ├── sorting/
-│   │   ├── bubble_sort.py
-│   │   ├── merge_sort.py
-│   │   └── quick_sort.py
-│   ├── searching/
-│   │   ├── binary_search.py
-│   │   ├── dfs.py
-│   │   └── bfs.py
-│   ├── dynamic_programming/
-│   │   ├── fibonacci.py
-│   │   ├── knapsack.py
-│   │   └── lcs.py
-│   ├── graphs/
-│   │   ├── dijkstra.py
-│   │   ├── kruskal.py
-│   │   └── prim.py
-│   ├── strings/
-│   │   ├── kmp.py
-│   │   ├── rabin_karp.py
-│   │   └── trie.py
-│   └── data_structures/
-│       ├── linked_list.py
-│       ├── stack.py
-│       ├── queue.py
-│       ├── binary_tree.py
-│       └── hash_table.py
-│
+│   │   ├── kmp.h
+│   │   ├── rabin_karp.h
+│   │   └── trie.h
+|
 ├── tests/
-│   ├── C/
-│   ├── C++/
-│   └── Python/
 │
 └── README.md
 ```

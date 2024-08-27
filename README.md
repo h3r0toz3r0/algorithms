@@ -35,8 +35,8 @@ The algorithms repository provides a collection of essential algorithm implement
 1. Clone the repository:
 
    ```sh
-   git clone https://github.com/yourusername/data-structures.git
-   cd data-structures/
+   git clone https://github.com/yourusername/algorithms.git
+   cd algorithms/
    ```
 1. Install necessary dependencies:
 

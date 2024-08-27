@@ -13,14 +13,15 @@
 
 /**
  * @brief Provides global error logging.
- * 
+ *
  * This definition allows additional arguments to be passed as an option.
  */
-#define ERROR_LOG(fmt, ...) fprintf(stderr, "\n[Error]: " fmt "\n", ##__VA_ARGS__)
+#define ERROR_LOG(fmt, ...) \
+    fprintf(stderr, "\n[Error]: " fmt "\n", ##__VA_ARGS__)
 
 /**
  * @brief Provides global information logging.
- * 
+ *
  * This definition allows additional arguments to be passed as an option.
  */
 #define INFO_LOG(fmt, ...) fprintf(stderr, "\n[Info]: " fmt "\n", ##__VA_ARGS__)
@@ -32,8 +33,8 @@
  * provided function, captures its output, and then restores stdout. The output
  * is returned as a string.
  *
- * @param func   The function whose output is to be captured. The function should
- *               accept a single void* argument and return void.
+ * @param func   The function whose output is to be captured. The function
+ * should accept a single void* argument and return void.
  * @param input  The input parameter to be passed to the function `func`.
  *               This parameter is of type void* and can be any data type.
  *
@@ -54,7 +55,7 @@
  * void my_function(void *input) {
  *     printf("Input is: %s\n", (char *)input);
  * }
- * 
+ *
  * char *output = capture_stdout(my_function, "Hello, World!");
  * if (output) {
  *     printf("Captured output: %s\n", output);
@@ -64,8 +65,7 @@
  * }
  * @endcode
  */
-char* 
-capture_stdout (void (*func)(void *), void *input);
+char *capture_stdout(void (*func)(void *), void *input);
 
 /**
  * @brief   Compare two strings for equality, checking length and null
@@ -80,7 +80,6 @@ capture_stdout (void (*func)(void *), void *input);
  * @return  True if both strings are of the same length, null-terminated,
  *          and match in content. False otherwise.
  */
-bool
-is_name_match (const char *string_1, const char *string_2);
+bool is_name_match(const char *string_1, const char *string_2);
 
 #endif // TEST_AUXILIARY_H

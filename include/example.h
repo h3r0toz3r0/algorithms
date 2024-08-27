@@ -13,21 +13,10 @@
  * @brief   Prints "Hello World" to the console.
  *
  * This function outputs the string "Hello World" to the standard output using
- * the `printf` function from the C standard library. It returns 0 to indicate
- * successful execution.
+ * the `printf` function from the C standard library.
  *
- * @return  Returns 0 on success.
- *
- * @example
- * @code
- * #include "hello.h"
- * 
- * int main() {
- *     hello();
- *     return 0;
- * }
- * @endcode
+ * @return  None
  */
-int hello();
+void hello();
 
 #endif // EXAMPLE_H

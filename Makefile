@@ -1,35 +1,59 @@
-# Default targets
-all: C C++
+# Compiler and flags
+CC = gcc
+CFLAGS = -Wall -Werror -Wextra -Wpedantic -Iinclude -Itest/include
+LDFLAGS = -lcunit
 
-C:
-	$(MAKE) -C C
+# Directories
+SRC_DIR = src
+TEST_SRC_DIR = test/src
+OBJ_DIR = obj
+BIN_DIR = bin
 
-C++:
-	$(MAKE) -C C++
+# Source and object files
+SRC_SOURCES = $(wildcard $(SRC_DIR)/*.c)
+TEST_SOURCES = $(wildcard $(TEST_SRC_DIR)/*.c) test/test_main.c
+SRC_OBJECTS = $(patsubst $(SRC_DIR)/%, $(OBJ_DIR)/%, $(SRC_SOURCES:.c=.o))
+TEST_OBJECTS = $(patsubst $(TEST_SRC_DIR)/%, $(OBJ_DIR)/%, $(TEST_SOURCES:.c=.o))
+TEST_EXEC = $(BIN_DIR)/test_main
 
-# Forward arguments to the tests/C/Makefile
-c_test: C
-	$(MAKE) -C tests/C $(ARGS)
+.PHONY: all clean format valgrind
 
-clean:
-	$(MAKE) -C C clean
-	$(MAKE) -C C++ clean
-	$(MAKE) -C tests/C clean
+# Default target
+all: $(OBJ_DIR) $(BIN_DIR) $(SRC_OBJECTS) $(TEST_EXEC)
+	@echo "Build complete."
 
-# Code formatting with clang-format
-TEST_SRC = $(wildcard tests/C/src/*.c) tests/C/test_main.c
-ACTUAL_SRC = $(wildcard C/src/*.c)
+# Create object files from src/
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
+# Create object files from test/src/
+$(OBJ_DIR)/%.o: $(TEST_SRC_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Link the test executable
+$(TEST_EXEC): $(SRC_OBJECTS) $(TEST_OBJECTS)
+	$(CC) $(SRC_OBJECTS) $(TEST_OBJECTS) -o $(TEST_EXEC) $(LDFLAGS) 
+
+# Run tests with Valgrind
+valgrind: all
+	valgrind --leak-check=full --track-origins=yes ./$(TEST_EXEC)
+
+# Format all C source and header files
 format:
-	@echo "Formatting code with clang-format..."
-	@clang-format-15 -i $(TEST_SRC) || true
-	@clang-format-15 -i $(ACTUAL_SRC) || true
+	clang-format-15 -i $(SRC_SOURCES) $(wildcard include/*.h) $(TEST_SOURCES) $(wildcard test/include/*.h)
+	@echo "Formatting complete."
 
-.PHONY: all clean C C++ c_test format
+# Create necessary directories
+$(OBJ_DIR):
+	@mkdir -p $(OBJ_DIR)
 
-# Capture additional arguments after `make execute`
-ARGS = $(filter-out $@,$(MAKECMDGOALS))
+$(BIN_DIR):
+	@mkdir -p $(BIN_DIR)
 
-# Prevent make from interpreting additional arguments as targets
-%:
-	@:
+# Clean object and executable files
+clean:
+	rm -rf $(OBJ_DIR) $(BIN_DIR)
+	rm test/test_main.o
+	@echo "Clean complete."

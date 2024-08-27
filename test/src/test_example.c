@@ -8,14 +8,14 @@
  * @date    August 17, 2024
  */
 
+#include "test_example.h"
+#include "example.h"
+#include "test_auxiliary.h"
+#include <CUnit/Basic.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <CUnit/Basic.h>
-#include "example.h"
-#include "test_auxiliary.h"
-#include "test_example.h"
 
 // Function Declarations
 static void test_hello(void);
@@ -62,14 +62,9 @@ test_hello (void)
 {
     // Capture function output to buffer
     char *buffer = NULL;
-    buffer       = capture_stdout((void *)hello, NULL);
-
-    // Capture return value of function
-    int result;
-    result = hello();
+    buffer       = capture_stdout(hello, NULL);
 
     // Check the output and return value
-    CU_ASSERT_EQUAL(result, 0);
     CU_ASSERT_STRING_EQUAL(buffer, "Hello World!\n");
 
     // Clean up

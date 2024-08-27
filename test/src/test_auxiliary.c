@@ -6,11 +6,11 @@
  * @date    August 20, 2024
  */
 
+#include "test_auxiliary.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include "test_auxiliary.h"
 
 // Macros
 #define OUTPUT_BUFFER_SIZE 1024
@@ -46,10 +46,9 @@ is_name_match (const char *string_1, const char *string_2)
 char *
 capture_stdout (void (*func)(void *), void *input)
 {
-    int   fd;                      // File descriptor to save current stdout
-    FILE *tmp_file = NULL;         // File to hold function output
-    char *output   = NULL;         // Captured output
-    int   retval   = EXIT_SUCCESS; // Return value for error handling
+    int   fd;              // File descriptor to save current stdout
+    FILE *tmp_file = NULL; // File to hold function output
+    char *output   = NULL; // Captured output
 
     // Save current stdout fd
     fd = dup(fileno(stdout));
@@ -57,7 +56,6 @@ capture_stdout (void (*func)(void *), void *input)
     if (-1 == fd)
     {
         ERROR_LOG("Failed to duplicate stdout");
-        retval = EXIT_FAILURE;
         goto CLEANUP;
     }
 
@@ -67,7 +65,6 @@ capture_stdout (void (*func)(void *), void *input)
     if (NULL == tmp_file)
     {
         ERROR_LOG("Failed to open temporary output file");
-        retval = EXIT_FAILURE;
         goto CLEANUP;
     }
 
@@ -75,7 +72,6 @@ capture_stdout (void (*func)(void *), void *input)
     if (-1 == dup2(fileno(tmp_file), fileno(stdout)))
     {
         ERROR_LOG("Failed to redirect stdout");
-        retval = EXIT_FAILURE;
         goto CLEANUP;
     }
 
@@ -89,7 +85,6 @@ capture_stdout (void (*func)(void *), void *input)
     if (-1 == dup2(fd, fileno(stdout)))
     {
         ERROR_LOG("Failed to restore original stdout");
-        retval = EXIT_FAILURE;
         goto CLEANUP;
     }
 
@@ -104,7 +99,6 @@ capture_stdout (void (*func)(void *), void *input)
     if (NULL == tmp_file)
     {
         ERROR_LOG("Failed to open temporary output file for reading");
-        retval = EXIT_FAILURE;
         goto CLEANUP;
     }
 
@@ -113,14 +107,12 @@ capture_stdout (void (*func)(void *), void *input)
     if (NULL == output)
     {
         ERROR_LOG("Failed to allocate memory for output");
-        retval = EXIT_FAILURE;
         goto CLEANUP;
     }
 
     if (NULL == fgets(output, OUTPUT_BUFFER_SIZE, tmp_file))
     {
         ERROR_LOG("Failed to read output from temporary file");
-        retval = EXIT_FAILURE;
         goto CLEANUP;
     }
 
@@ -131,7 +123,6 @@ capture_stdout (void (*func)(void *), void *input)
     if (EXIT_SUCCESS != remove(TEMP_FILE_PATH))
     {
         ERROR_LOG("Failed to remove temporary file");
-        retval = EXIT_FAILURE;
         goto CLEANUP;
     }
 
